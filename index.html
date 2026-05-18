@@ -109,6 +109,164 @@
     <input type="text" id="reportedBy">
   </div>
 
+  <button type="submit">Generate Report</button>
+</form>
+
+<h3>Final Report</h3>
+<textarea id="output" readonly></textarea>
+
+<script>
+function val(id) {
+  return document.getElementById(id).value.trim();
+}
+
+function calculateMERatio() {
+  const myeloid =
+    Number(val("blasts")) +
+    Number(val("pros")) +
+    Number(val("myels")) +
+    Number(val("metas")) +
+    Number(val("neuts")) +
+    Number(val("eos")) +
+    Number(val("baso")) +
+    Number(val("mono"));
+
+  const erythroid = Number(val("eryth"));
+
+  if (!erythroid || erythroid === 0) return "N/A";
+
+  return (myeloid / erythroid).toFixed(2);
+}
+
+// Auto-update M:E ratio live
+document.querySelectorAll("#blasts,#pros,#myels,#metas,#neuts,#eos,#baso,#mono,#eryth")
+  .forEach(el => el.addEventListener("input", () => {
+    document.getElementById("meRatio").value = calculateMERatio();
+  }));
+
+function buildReport() {
+  const lines = [];
+
+  lines.push("BLOOD COUNT: " +
+    "Hb " + val("hb") +
+    ", WCC " + val("wcc") +
+    ", Diff N " + val("diffN") +
+    ", Diff L " + val("diffL") +
+    ", Plt " + val("plt"));
+
+  lines.push("Blood Film:");
+  lines.push(val("bloodFilm"));
+
+  lines.push("MARROW ASPIRATE");
+  lines.push("Cellularity: " + val("cellularity"));
+  lines.push("Erythropoiesis: " + val("erythropoiesis"));
+  lines.push("Granulopoiesis: " + val("granulopoiesis"));
+  lines.push("Megakaryocytes: " + val("megakaryocytes"));
+
+  lines.push("Differential:");
+  lines.push(
+    "Blasts " + val("blasts") + "%, " +
+    "Pros " + val("pros") + "%, " +
+    "Myels " + val("myels") + "%, " +
+    "Metas " + val("metas") + "%, " +
+    "Neuts " + val("neuts") + "%, " +
+    "Eryths " + val("eryth") + "%, " +
+    "Plasma " + val("plasma") + "%, " +
+    "Eos " + val("eos") + "%, " +
+    "Basos " + val("baso") + "%, " +
+    "Mono " + val("mono") + "%, " +
+    "Other " + val("other") + "%"
+  );
+  lines.push("M:E Ratio: " + calculateMERatio());
+
+  lines.push("Infiltrate: " + val("infiltrate"));
+  lines.push("Iron Stain: " + val("ironStain"));
+  lines.push("CONCLUSION: " + val("conclusion"));
+  lines.push("");
+  lines.push("Reported by: " + val("reportedBy"));
+  lines.push("");
+  lines.push("Laboratory defined uncertainty of measurement was considered in drawing this conclusion.");
+
+  document.getElementById("output").value = lines.join("\n");
+}
+</script>
+
+</body>
+</html><body>
+
+<h2>Bone Marrow Report Builder</h2>
+
+<form id="reportForm" onsubmit="event.preventDefault(); buildReport();">
+
+  <!-- BLOOD COUNT -->
+  <div class="section-box">
+    <h3>Blood Count</h3>
+    <div class="row">
+      <div>Hb: <input type="text" id="hb" class="small"></div>
+      <div>WCC: <input type="text" id="wcc" class="small"></div>
+      <div>Diff N: <input type="text" id="diffN" class="small"></div>
+      <div>Diff L: <input type="text" id="diffL" class="small"></div>
+      <div>Plt: <input type="text" id="plt" class="small"></div>
+    </div>
+
+    <label>BLOOD FILM</label>
+    <textarea id="bloodFilm"></textarea>
+  </div>
+
+  <!-- MARROW ASPIRATE -->
+  <div class="section-box">
+    <h3>Marrow Aspirate</h3>
+
+    <label>CELLULARITY</label>
+    <textarea id="cellularity"></textarea>
+
+    <label>ERYTHROPOIESIS</label>
+    <textarea id="erythropoiesis"></textarea>
+
+    <label>GRANULOPOIESIS</label>
+    <textarea id="granulopoiesis"></textarea>
+
+    <label>MEGAKARYOCYTES</label>
+    <textarea id="megakaryocytes"></textarea>
+  </div>
+
+  <!-- DIFFERENTIAL -->
+  <div class="section-box">
+    <h3>Differential (%)</h3>
+
+    <div class="row">
+      <div>Blasts: <input type="text" id="blasts" class="small"></div>
+      <div>Pros: <input type="text" id="pros" class="small"></div>
+      <div>Myels: <input type="text" id="myels" class="small"></div>
+      <div>Metas: <input type="text" id="metas" class="small"></div>
+      <div>Neuts: <input type="text" id="neuts" class="small"></div>
+      <div>Eryths: <input type="text" id="eryth" class="small"></div>
+      <div>Plasma: <input type="text" id="plasma" class="small"></div>
+      <div>Eos: <input type="text" id="eos" class="small"></div>
+      <div>Basos: <input type="text" id="baso" class="small"></div>
+      <div>Mono: <input type="text" id="mono" class="small"></div>
+      <div>Other: <input type="text" id="other" class="small"></div>
+    </div>
+
+    <label>M:E Ratio (auto)</label>
+    <input type="text" id="meRatio" class="small" readonly>
+  </div>
+
+  <!-- OTHER SECTIONS -->
+  <div class="section-box">
+    <label>INFILTRATE</label>
+    <textarea id="infiltrate"></textarea>
+
+    <label>IRON STAIN</label>
+    <textarea id="ironStain"></textarea>
+
+    <label>CONCLUSION</label>
+    <textarea id="conclusion"></textarea>
+
+    <label>Reported by</label>
+    <input type="text" id="reportedBy">
+  </div>
+
 <div style="display:flex; gap:10px; margin-top:15px;">
   <button type="submit">Generate Report</button>
   <button type="button" onclick="clearReport()">Clear Report</button>
