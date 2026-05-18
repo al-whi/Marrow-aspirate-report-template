@@ -109,7 +109,10 @@
     <input type="text" id="reportedBy">
   </div>
 
+<div style="display:flex; gap:10px; margin-top:15px;">
   <button type="submit">Generate Report</button>
+  <button type="button" onclick="clearReport()">Clear Report</button>
+</div>
 </form>
 
 <h3>Final Report</h3>
@@ -188,6 +191,11 @@ function buildReport() {
   lines.push("Laboratory defined uncertainty of measurement was considered in drawing this conclusion.");
 
   document.getElementById("output").value = lines.join("\n");
+
+function clearReport() {
+  document.getElementById("output").value = "";
+}
+
 }
 </script>
 
