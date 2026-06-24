@@ -87,6 +87,7 @@
       <div>Eos: <input type="text" id="eos" class="small"></div>
       <div>Basos: <input type="text" id="baso" class="small"></div>
       <div>Mono: <input type="text" id="mono" class="small"></div>
+      <div>Lymph: <input type="text" id="lymph" class="small"></div>
       <div>Other: <input type="text" id="other" class="small"></div>
     </div>
 
@@ -178,6 +179,7 @@ function buildReport() {
     "Eos " + val("eos") + "%, " +
     "Basos " + val("baso") + "%, " +
     "Mono " + val("mono") + "%, " +
+    "Lymph " + val("lymph") + "%, " +
     "Other " + val("other") + "%"
   );
   lines.push("M:E Ratio: " + calculateMERatio());
