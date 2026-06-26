@@ -248,19 +248,8 @@ document.querySelectorAll("#blasts,#pros,#myels,#metas,#neuts,#eos,#baso,#mono,#
     document.getElementById("meRatio").value = calculateMERatio();
   }));
 
-function getFormattedDateTime() {
-  const now = new Date();
-  const date = now.toLocaleDateString();
-  const time = now.toLocaleTimeString();
-  return date + " " + time;
-}
-
 function buildReport() {
   const lines = [];
-
-  // Add timestamp
-  lines.push("Date/Time: " + getFormattedDateTime());
-  lines.push("");
 
   lines.push("BLOOD COUNT: " +
     "Hb " + val("hb") +
